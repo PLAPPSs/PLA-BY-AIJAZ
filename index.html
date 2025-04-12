@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Pakistan Law App by Aijaz{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar for larger screens -->
+    <div class="col-lg-3 mb-4 d-none d-lg-block">
+        <div class="card" data-aos="fade-right" data-aos-delay="100">
+            <div class="card-header">
+                <h5 class="mb-0">Legal Documents</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action doc-link animate__animated animate__fadeInLeft animate__delay-1s" data-doc-type="ppc">
+                    <i class="fas fa-book me-2"></i>Pakistan Penal Code (PPC)
+                </a>
+                <a href="#" class="list-group-item list-group-item-action doc-link animate__animated animate__fadeInLeft animate__delay-2s" data-doc-type="crpc">
+                    <i class="fas fa-gavel me-2"></i>Criminal Procedure Code (CrPC)
+                </a>
+                <a href="#" class="list-group-item list-group-item-action doc-link animate__animated animate__fadeInLeft animate__delay-3s" data-doc-type="constitution">
+                    <i class="fas fa-landmark me-2"></i>Constitution of Pakistan
+                </a>
+            </div>
+        </div>
+
+        <div class="card mt-4" data-aos="fade-right" data-aos-delay="200">
+            <div class="card-header">
+                <h5 class="mb-0">Search</h5>
+            </div>
+            <div class="card-body">
+                <form id="search-form">
+                    <div class="mb-3">
+                        <select class="form-select mb-2" id="search-doc-type">
+                            <option value="ppc">Pakistan Penal Code</option>
+                            <option value="crpc">Criminal Procedure Code</option>
+                            <option value="constitution">Constitution</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="search-input" placeholder="Search term...">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4" data-aos="fade-right" data-aos-delay="300">
+            <div class="card-header">
+                <h5 class="mb-0">Bookmarks</h5>
+            </div>
+            <div class="card-body" id="bookmarks-container">
+                <p class="text-muted">Loading bookmarks...</p>
+            </div>
+        </div>
+        
+        <div class="card mt-4" data-aos="fade-right" data-aos-delay="400">
+            <div class="card-header">
+                <h5 class="mb-0">Statistics</h5>
+            </div>
+            <div id="stats-container" class="card-body">
+                <p class="text-muted">Loading statistics...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Document Selection -->
+    <div class="col-12 mb-4 d-block d-lg-none">
+        <div class="card animate__animated animate__fadeInUp">
+            <div class="card-header">
+                <h5 class="mb-0">Select Document</h5>
+            </div>
+            <div class="card-body">
+                <select class="form-select" id="mobile-doc-selector">
+                    <option value="">-- Select a document --</option>
+                    <option value="ppc">Pakistan Penal Code (PPC)</option>
+                    <option value="crpc">Criminal Procedure Code (CrPC)</option>
+                    <option value="constitution">Constitution of Pakistan</option>
+                    <option value="qanun">Qanun-e-Shahadat Order</option>
+                    <option value="cpc">Civil Procedure Code</option>
+                    <option value="fco">Family Courts Ordinance</option>
+                    <option value="lra">Land Revenue Act</option>
+                    <option value="qanun">Qanun-e-Shahadat Order</option>
+                    <option value="cpc">Civil Procedure Code</option>
+                    <option value="fco">Family Courts Ordinance</option>
+                    <option value="lra">Land Revenue Act</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Search -->
+    <div class="col-12 mb-4 d-block d-lg-none">
+        <div class="card animate__animated animate__fadeInUp animate__delay-1s">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Search</h5>
+                <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#mobile-search-collapse" aria-expanded="false">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="collapse" id="mobile-search-collapse">
+                <div class="card-body">
+                    <form id="mobile-search-form">
+                        <div class="mb-3">
+                            <select class="form-select mb-2" id="mobile-search-doc-type">
+                                <option value="ppc">Pakistan Penal Code</option>
+                                <option value="crpc">Criminal Procedure Code</option>
+                                <option value="constitution">Constitution</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="mobile-search-input" placeholder="Search term...">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main content area -->
+    <div class="col-lg-9">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 id="current-document-title">Welcome to Pakistan Law App by Aijaz</h4>
+                <button id="toggle-fullscreen" class="btn btn-sm btn-outline-secondary d-none d-lg-inline">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+            <div class="card-body">
+                <div id="welcome-message">
+                    <div class="text-center mb-4" data-aos="fade-up">
+                        <img src="https://raw.githubusercontent.com/PLAPPSs/imeges/refs/heads/main/IMG_20250403_012019.jpg" 
+                             alt="Aijaz Photo" 
+                             class="img-fluid rounded-circle mb-3 animate__animated animate__fadeIn" 
+                             style="width: 100px; height: 100px; object-fit: cover;">
+                        <h2 class="animate__animated animate__fadeInDown">Pakistan Law App</h2>
+                        <p class="lead animate__animated animate__fadeInUp">Access and search Pakistan's legal documents</p>
+                        <p class="text-muted animate__animated animate__fadeIn animate__delay-1s">Created by Aijaz - First Year Law Student</p>
+                    </div>
+                    
+                    <!-- Pakistan law themed images in a carousel -->
+                    <div id="lawCarousel" class="carousel slide mb-4" data-bs-ride="carousel" data-aos="zoom-in">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="https://cdn.pixabay.com/photo/2019/03/25/22/52/pakistan-flag-4081547_1280.jpg" class="d-block w-100 rounded" alt="Pakistan Flag" style="height: 200px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Pakistan Law</h5>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://cdn.pixabay.com/photo/2014/11/16/23/39/superhero-534120_1280.jpg" class="d-block w-100 rounded" alt="Justice" style="height: 200px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Legal Reference</h5>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="https://cdn.pixabay.com/photo/2019/10/05/15/04/supreme-court-4528935_1280.jpg" class="d-block w-100 rounded" alt="Court" style="height: 200px; object-fit: cover;">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>Judicial System</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#lawCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#lawCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    
+                    <div class="alert alert-info" data-aos="fade-up" data-aos-delay="100">
+                        <h5><i class="fas fa-info-circle me-2"></i>Getting Started</h5>
+                        <p>Select a document from the menu to begin exploring Pakistan's legal framework:</p>
+                        <ul>
+                            <li><strong>Pakistan Penal Code (PPC)</strong> - The main criminal code of Pakistan</li>
+                            <li><strong>Criminal Procedure Code (CrPC)</strong> - Procedures for administration of substantive criminal law</li>
+                            <li><strong>Constitution</strong> - The supreme law of Pakistan</li>
+                        </ul>
+                        <p>Use the search function to find specific provisions or topics within each document.</p>
+                    </div>
+                    
+                    <div class="alert alert-success" data-aos="fade-up" data-aos-delay="200">
+                        <h5><i class="fas fa-star me-2"></i>Key Features</h5>
+                        <p>This app provides powerful features to help law students and legal professionals:</p>
+                        <ul class="animate__animated animate__fadeInRight animate__delay-1s">
+                            <li><strong>Bookmarking</strong> - Save important sections for quick access later</li>
+                            <li><strong>Document Statistics</strong> - See the most popular documents and recent searches</li>
+                            <li><strong>Enhanced Search</strong> - Find specific legal provisions quickly and accurately</li>
+                            <li><strong>Mobile-Friendly</strong> - Access legal documents on any device</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="text-center mt-4" data-aos="zoom-in" data-aos-delay="300">
+                        <a href="/about" class="btn btn-primary animate__animated animate__pulse animate__infinite animate__slower">About the Creator</a>
+                    </div>
+                </div>
+                
+                <div id="document-content" class="d-none">
+                    <!-- Document content will be loaded here -->
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Loading document...</p>
+                    </div>
+                </div>
+                
+                <div id="search-results" class="d-none">
+                    <h5 class="border-bottom pb-2 mb-3">Search Results</h5>
+                    <div id="search-stats" class="alert alert-info">
+                        <small><span id="results-count">0</span> results found for "<span id="search-query"></span>"</small>
+                    </div>
+                    <div id="results-container">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}
