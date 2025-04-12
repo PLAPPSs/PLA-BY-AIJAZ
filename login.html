@@ -1,0 +1,302 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Pakistan Law App{% endblock %}
+
+{% block extra_head %}
+<style>
+    .login-container {
+        min-height: 80vh;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+    }
+    
+    .logo-section {
+        background: linear-gradient(135deg, #0e5f2e 0%, #1b8a47 100%);
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .logo-section::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background: url('/static/images/pakistan-flag-bg.svg');
+        background-size: 40%;
+        opacity: 0.05;
+        transform: rotate(30deg);
+    }
+    
+    .logo-section img {
+        width: 120px;
+        height: auto;
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-section {
+        padding: 3rem;
+    }
+    
+    .login-btn {
+        background: linear-gradient(135deg, #0e5f2e 0%, #1b8a47 100%);
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(27, 138, 71, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .login-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(27, 138, 71, 0.4);
+    }
+    
+    .login-btn i {
+        margin-right: 10px;
+    }
+    
+    .restricted-badge {
+        background-color: rgba(220, 53, 69, 0.1);
+        color: #dc3545;
+        border: 1px solid rgba(220, 53, 69, 0.2);
+        padding: 0.5rem 1rem;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+    
+    .restricted-badge i {
+        margin-right: 8px;
+    }
+    
+    .features-list {
+        margin-top: 2rem;
+    }
+    
+    .features-list .feature-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .features-list .feature-icon {
+        background-color: rgba(27, 138, 71, 0.1);
+        color: #1b8a47;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+    
+    .error-alert {
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        background-color: rgba(220, 53, 69, 0.1);
+        border: 1px solid rgba(220, 53, 69, 0.2);
+    }
+    
+    @media (max-width: 767.98px) {
+        .login-container {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .logo-section, .form-section {
+            padding: 2rem 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-9 col-xl-8">
+            <div class="login-container">
+                <div class="row g-0">
+                    <div class="col-md-5">
+                        <div class="logo-section h-100 d-flex flex-column justify-content-center text-white" data-aos="fade-right">
+                            <img src="/static/images/pakistan-emblem.svg" alt="Pakistan Emblem" class="logo animate__animated animate__fadeIn">
+                            <h2 class="mb-3 animate__animated animate__fadeInDown">Pakistan Law App</h2>
+                            <p class="mb-4 opacity-75 animate__animated animate__fadeIn animate__delay-1s">Access the comprehensive database of Pakistan's legal documents.</p>
+                            
+                            <div class="features-list">
+                                <div class="feature-item animate__animated animate__fadeInLeft animate__delay-1s">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-book-open"></i>
+                                    </div>
+                                    <div>Legal Document Library</div>
+                                </div>
+                                <div class="feature-item animate__animated animate__fadeInLeft animate__delay-2s">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-search"></i>
+                                    </div>
+                                    <div>Powerful Search Tools</div>
+                                </div>
+                                <div class="feature-item animate__animated animate__fadeInLeft animate__delay-3s">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-bookmark"></i>
+                                    </div>
+                                    <div>Save & Organize Bookmarks</div>
+                                </div>
+                                <div class="feature-item animate__animated animate__fadeInLeft animate__delay-4s">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-wifi"></i>
+                                    </div>
+                                    <div>Works Offline</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-section" data-aos="fade-left">
+                            <div class="restricted-badge animate__animated animate__pulse animate__infinite animate__slower">
+                                <i class="fas fa-lock"></i> Restricted Access
+                            </div>
+                            
+                            <h3 class="mb-2 animate__animated animate__fadeInUp">Sign In</h3>
+                            <p class="text-muted mb-4 animate__animated animate__fadeIn animate__delay-1s">This application is restricted to authorized users only.</p>
+                            
+                            {% if error %}
+                            <div class="error-alert">
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                        <i class="fas fa-exclamation-circle text-danger fs-4"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1 text-danger">Access Denied</h6>
+                                        {% if error == 'access-denied' %}
+                                        <p class="mb-0 small">Your email is not on the authorized list. Please contact the administrator.</p>
+                                        {% elif error == 'signin-failed' %}
+                                        <p class="mb-0 small">Sign-in failed. Please try again.</p>
+                                        {% elif error == 'verification-failed' %}
+                                        <p class="mb-0 small">Verification failed. Please try again later.</p>
+                                        {% else %}
+                                        <p class="mb-0 small">{{ error }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                            
+                            <button id="googleSignIn" class="login-btn btn btn-primary btn-lg w-100 mb-4 animate__animated animate__pulse animate__infinite animate__slow">
+                                <i class="fab fa-google"></i> Sign in with Google
+                            </button>
+                            
+                            <div class="text-center text-muted small animate__animated animate__fadeIn animate__delay-2s">
+                                <p>By signing in, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+                                <p class="mb-0">Access provided by Aijaz for educational purposes only.</p>
+                                <hr class="my-3">
+                                <p class="mt-2">Don't have access? <a href="/request-access" class="text-primary animate__animated animate__pulse animate__infinite animate__slower">Request access from the developer</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+    import { 
+        getAuth,
+        signInWithPopup, 
+        GoogleAuthProvider,
+        onAuthStateChanged
+    } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+    
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "{{ firebase_api_key }}",
+        authDomain: "{{ firebase_project_id }}.firebaseapp.com",
+        projectId: "{{ firebase_project_id }}",
+        storageBucket: "{{ firebase_project_id }}.appspot.com",
+        appId: "{{ firebase_app_id }}"
+    };
+    
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    
+    // Check if user is already signed in
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in
+            checkUserAccess(user);
+        }
+    });
+    
+    document.getElementById('googleSignIn').addEventListener('click', () => {
+        // Show loading state
+        const button = document.getElementById('googleSignIn');
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+        button.disabled = true;
+        
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                // User signed in
+                const user = result.user;
+                checkUserAccess(user);
+            }).catch((error) => {
+                console.error("Error during sign in:", error);
+                window.location.href = '/login?error=signin-failed';
+            });
+    });
+    
+    function checkUserAccess(user) {
+        // Show verifying state
+        const button = document.getElementById('googleSignIn');
+        if (button) {
+            button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying access...';
+            button.disabled = true;
+        }
+        
+        // Send user info to backend to verify access
+        fetch('/verify-access', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: user.email,
+                uid: user.uid,
+                token: user.accessToken
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.hasAccess) {
+                // User has access, redirect to main page
+                window.location.href = '/';
+            } else {
+                // User doesn't have access
+                auth.signOut().then(() => {
+                    window.location.href = '/login?error=access-denied';
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error verifying access:', error);
+            window.location.href = '/login?error=verification-failed';
+        });
+    }
+</script>
+{% endblock %}
