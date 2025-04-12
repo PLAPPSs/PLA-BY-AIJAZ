@@ -1,0 +1,274 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Access - Pakistan Law App{% endblock %}
+
+{% block extra_head %}
+<style>
+    .request-container {
+        min-height: 80vh;
+        background-color: rgba(33, 37, 41, 0.6);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        overflow: hidden;
+    }
+    
+    .header-section {
+        background: linear-gradient(135deg, #0e5f2e 0%, #1b8a47 100%);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .header-section::before {
+        content: "";
+        position: absolute;
+        width: 200%;
+        height: 200%;
+        top: -50%;
+        left: -50%;
+        background: url('/static/images/pakistan-flag-bg.svg');
+        background-size: 40%;
+        opacity: 0.05;
+        transform: rotate(30deg);
+    }
+    
+    .form-section {
+        padding: 2rem;
+    }
+    
+    .contact-icon {
+        font-size: 2.5rem;
+        color: #1b8a47;
+        margin-bottom: 1rem;
+    }
+    
+    .submit-btn {
+        background: linear-gradient(135deg, #0e5f2e 0%, #1b8a47 100%);
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 15px rgba(27, 138, 71, 0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(27, 138, 71, 0.4);
+    }
+    
+    .back-btn {
+        color: #6c757d;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        transition: all 0.2s ease;
+    }
+    
+    .back-btn:hover {
+        color: #1b8a47;
+    }
+    
+    .back-btn i {
+        margin-right: 6px;
+    }
+    
+    .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(27, 138, 71, 0.1);
+        color: #1b8a47;
+        border-radius: 50%;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+        background-color: #1b8a47;
+        color: white;
+        transform: translateY(-3px);
+    }
+    
+    .contact-info {
+        padding: 1.5rem;
+        background-color: rgba(27, 138, 71, 0.05);
+        border-radius: 10px;
+        border: 1px solid rgba(27, 138, 71, 0.1);
+        margin-bottom: 1.5rem;
+    }
+    
+    .contact-info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .contact-info-item:last-child {
+        margin-bottom: 0;
+    }
+    
+    .contact-info-item i {
+        width: 24px;
+        color: #1b8a47;
+        margin-right: 10px;
+    }
+    
+    .success-message {
+        display: none;
+        padding: 2rem;
+        text-align: center;
+    }
+    
+    .success-icon {
+        font-size: 4rem;
+        color: #1b8a47;
+        margin-bottom: 1.5rem;
+    }
+    
+    @media (max-width: 767.98px) {
+        .request-container {
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .header-section, .form-section {
+            padding: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10 col-lg-8">
+            <div class="request-container">
+                <div class="header-section text-white">
+                    <h2 class="mb-2">Request Access</h2>
+                    <p class="mb-0 opacity-75">Fill out the form below to request access to the Pakistan Law App</p>
+                </div>
+                
+                <div class="form-section">
+                    <a href="/login" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Login
+                    </a>
+                    
+                    <div id="requestForm">
+                        {% if success %}
+                        <div class="alert alert-success" role="alert">
+                            <i class="fas fa-check-circle me-2"></i> Your request has been sent successfully! We will review it and get back to you soon.
+                        </div>
+                        {% endif %}
+                        
+                        {% if error %}
+                        <div class="alert alert-danger" role="alert">
+                            <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-4">
+                            <p>To request access to the Pakistan Law App, please provide your information below. Our team will review your request and grant access if approved.</p>
+                        </div>
+                        
+                        <form action="/request-access" method="POST">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                                <div class="form-text">This must be the Google email you will use to sign in.</div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="profession" class="form-label">Profession <span class="text-danger">*</span></label>
+                                <select class="form-select" id="profession" name="profession" required>
+                                    <option value="" selected disabled>Select your profession</option>
+                                    <option value="Law Student">Law Student</option>
+                                    <option value="Lawyer">Lawyer</option>
+                                    <option value="Judge">Judge</option>
+                                    <option value="Legal Researcher">Legal Researcher</option>
+                                    <option value="Academic">Academic</option>
+                                    <option value="Government Official">Government Official</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="reason" class="form-label">Reason for Access <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                                <div class="form-text">Please explain why you need access to the Pakistan Law App.</div>
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="affiliation" class="form-label">Institution/Organization</label>
+                                <input type="text" class="form-control" id="affiliation" name="affiliation">
+                                <div class="form-text">If applicable, provide your university, law firm, or organization.</div>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="submit-btn btn btn-primary">Submit Request</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div id="successMessage" class="success-message">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3 class="mb-3">Request Submitted!</h3>
+                        <p class="mb-4">Thank you for your interest in the Pakistan Law App. We have received your request and will review it shortly. You will be notified via email when access is granted.</p>
+                        <a href="/login" class="btn btn-outline-secondary">Return to Login</a>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center mb-4">
+                        <h5 class="mb-3">Contact Developer Directly</h5>
+                        <p>You can also reach out to the developer through these channels:</p>
+                        
+                        <div class="contact-info mb-3">
+                            <div class="contact-info-item">
+                                <i class="fab fa-facebook-f"></i>
+                                <a href="https://web.facebook.com/itsaijazali06" target="_blank" class="text-decoration-none">
+                                    facebook.com/itsaijazali06
+                                </a>
+                            </div>
+                            <div class="contact-info-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>Contact through Facebook for email</span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-center">
+                            <a href="https://web.facebook.com/itsaijazali06" target="_blank" class="social-link">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // If form is submitted successfully, show success message and hide form
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('success') === 'true') {
+            document.getElementById('requestForm').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}
